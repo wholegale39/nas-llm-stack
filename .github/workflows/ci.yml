@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Shell syntax check
+        run: |
+          for f in scripts/*.sh; do bash -n "$f"; done
+          bash -n tests/test_stack.sh
+
+      - name: Suite self-test (22 checks, no docker needed)
+        run: |
+          bash tests/test_stack.sh
+
+      - name: YAML validation
+        run: |
+          python3 -c "import yaml; yaml.safe_load(open('docker-compose.yml')); print('compose yaml OK')"

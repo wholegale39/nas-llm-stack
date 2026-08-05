@@ -1,0 +1,49 @@
+# 群晖 NAS LLM 一键部署套件 — docker-compose 配置
+# 适用：DS220+/DS420+/DS920+ 等 x86_64 群晖（Docker/Container Manager）
+# 内存建议：≥8GB 可跑 7B 量化；≥16GB 推荐 7B-13B；<8GB 建议只跑 1.5B-3B
+#
+# 用法：
+#   方式 A（推荐）：Container Manager → 项目 → 新建 → 上传本目录
+#   方式 B（SSH）：docker compose up -d（需群晖已装 docker-compose 插件）
+#   方式 C（无 compose）：bash scripts/start-containers.sh
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: nas-ollama
+    restart: unless-stopped
+    volumes:
+      - ./data/ollama:/root/.ollama        # 模型存储（放在套件目录，方便备份）
+    ports:
+      - "11434:11434"                       # Ollama API
+    environment:
+      - OLLAMA_KEEP_ALIVE=30m              # 模型驻留 30 分钟，避免反复加载
+      - OLLAMA_NUM_PARALLEL=1              # 低配 NAS 串行处理，防 OOM
+    # 低功耗 NAS 优化：限制并发和内存
+    deploy:
+      resources:
+        limits:
+          memory: 6g
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: nas-open-webui
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    volumes:
+      - ./data/open-webui:/app/backend/data
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_AUTH=true                    # 首次访问需注册管理员
+    deploy:
+      resources:
+        limits:
+          memory: 2g
