@@ -1,10 +1,15 @@
 # 群晖 NAS LLM 一键部署套件
 
-![License](https://img.shields.io/badge/license-MIT-green) ![Platform](https://img.shields.io/badge/DSM-7.x-blue) ![Arch](https://img.shields.io/badge/arch-x86__64%20%7C%20arm64-lightgrey)
+![License](https://img.shields.io/badge/license-MIT-green) ![Platform](https://img.shields.io/badge/DSM-7.x-blue) ![Arch](https://img.shields.io/badge/arch-x86__64%20%7C%20arm64-lightgrey) ![CI](https://img.shields.io/github/actions/workflow/status/wholegale39/nas-llm-stack/ci.yml) ![GitHub stars](https://img.shields.io/github/stars/wholegale39/nas-llm-stack)
 
-**在群晖 NAS 上跑本地大模型，一条命令搞定。** 开箱即用：Ollama（模型引擎）+ Open WebUI（聊天界面），含低配 NAS 优化参数、模型推荐、状态监控和卸载脚本。
+> 在群晖 NAS 上跑本地大模型，一条命令搞定。开箱即用：Ollama（模型引擎）+ Open WebUI（聊天界面），含低配 NAS 优化参数、模型推荐、状态监控和卸载脚本。
 
-市面上群晖跑 LLM 全是"保姆教程"——这篇帖子告诉你装这个装那个，那篇教程参数写得不对。本套件是**开箱即用的产品**：下载 → 跑一个脚本 → 浏览器打开聊天界面。
+## ✨ 亮点
+
+- 🚀 **一条命令部署** — 下载→跑脚本→浏览器打开聊天界面
+- 💾 **低配优化** — 4-8GB 内存也能跑，参数已调优
+- 📊 **开箱即用的产品** — 含状态监控、模型推荐、卸载脚本
+
 
 ## 适用机型
 
